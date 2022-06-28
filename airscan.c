@@ -15,7 +15,7 @@ static const SANE_Device **sane_device_list;
 /* Initialize the backend
  */
 SANE_Status
-sane_init (SANE_Int *version_code, SANE_Auth_Callback authorize)
+sane_airscan_init (SANE_Int *version_code, SANE_Auth_Callback authorize)
 {
     SANE_Status status;
 
@@ -41,7 +41,7 @@ sane_init (SANE_Int *version_code, SANE_Auth_Callback authorize)
 /* Exit the backend
  */
 void
-sane_exit (void)
+sane_airscan_exit (void)
 {
     log_debug(NULL, "API: sane_exit(): called");
 
@@ -53,7 +53,7 @@ sane_exit (void)
 /* Get list of devices
  */
 SANE_Status
-sane_get_devices (const SANE_Device ***device_list, SANE_Bool local_only)
+sane_airscan_get_devices (const SANE_Device ***device_list, SANE_Bool local_only)
 {
     log_debug(NULL, "API: sane_get_devices(): called");
 
@@ -79,7 +79,7 @@ sane_get_devices (const SANE_Device ***device_list, SANE_Bool local_only)
 /* Open the device
  */
 SANE_Status
-sane_open (SANE_String_Const name, SANE_Handle *handle)
+sane_airscan_open (SANE_String_Const name, SANE_Handle *handle)
 {
     SANE_Status         status;
     device              *dev;
@@ -117,7 +117,7 @@ sane_open (SANE_String_Const name, SANE_Handle *handle)
 /* Close the device
  */
 void
-sane_close (SANE_Handle handle)
+sane_airscan_close (SANE_Handle handle)
 {
     device  *dev = (device*) handle;
 
@@ -131,7 +131,7 @@ sane_close (SANE_Handle handle)
 /* Get option descriptor
  */
 const SANE_Option_Descriptor *
-sane_get_option_descriptor (SANE_Handle handle, SANE_Int option)
+sane_airscan_get_option_descriptor (SANE_Handle handle, SANE_Int option)
 {
     device  *dev = (device*) handle;
     log_ctx *log = device_log_ctx(dev);
@@ -228,7 +228,7 @@ sane_control_option_log (log_ctx *log, const SANE_Option_Descriptor *desc,
 /* Get or set option value
  */
 SANE_Status
-sane_control_option (SANE_Handle handle, SANE_Int option, SANE_Action action,
+sane_airscan_control_option (SANE_Handle handle, SANE_Int option, SANE_Action action,
                      void *value, SANE_Int *info)
 {
     SANE_Status status = SANE_STATUS_INVAL;
@@ -273,7 +273,7 @@ DONE:
 /* Get current scan parameters
  */
 SANE_Status
-sane_get_parameters (SANE_Handle handle, SANE_Parameters *params)
+sane_airscan_get_parameters (SANE_Handle handle, SANE_Parameters *params)
 {
     SANE_Status status = SANE_STATUS_GOOD;
     device      *dev = (device*) handle;
@@ -295,7 +295,7 @@ sane_get_parameters (SANE_Handle handle, SANE_Parameters *params)
 /* Start scanning operation
  */
 SANE_Status
-sane_start (SANE_Handle handle)
+sane_airscan_start (SANE_Handle handle)
 {
     SANE_Status status;
     device      *dev = (device*) handle;
@@ -315,7 +315,7 @@ sane_start (SANE_Handle handle)
 /* Read scanned image
  */
 SANE_Status
-sane_read (SANE_Handle handle, SANE_Byte *data, SANE_Int max_len, SANE_Int *len)
+sane_airscan_read (SANE_Handle handle, SANE_Byte *data, SANE_Int max_len, SANE_Int *len)
 {
     SANE_Status status;
     device      *dev = (device*) handle;
@@ -352,7 +352,7 @@ sane_cancel (SANE_Handle handle)
 /* Set I/O mode
  */
 SANE_Status
-sane_set_io_mode (SANE_Handle handle, SANE_Bool non_blocking)
+sane_airscan_set_io_mode (SANE_Handle handle, SANE_Bool non_blocking)
 {
     SANE_Status status;
     device      *dev = (device*) handle;
@@ -374,7 +374,7 @@ sane_set_io_mode (SANE_Handle handle, SANE_Bool non_blocking)
 /* Get select file descriptor
  */
 SANE_Status
-sane_get_select_fd (SANE_Handle handle, SANE_Int *fd)
+sane_airscan_get_select_fd (SANE_Handle handle, SANE_Int *fd)
 {
     SANE_Status status;
     device      *dev = (device*) handle;
@@ -396,45 +396,45 @@ sane_get_select_fd (SANE_Handle handle, SANE_Int *fd)
 }
 
 /******************** API aliases for libsane-dll ********************/
-SANE_Status __attribute__ ((alias ("sane_init")))
+SANE_Status 
 sane_airscan_init (SANE_Int *version_code, SANE_Auth_Callback authorize);
 
-void __attribute__ ((alias ("sane_exit")))
+void
 sane_airscan_exit (void);
 
-SANE_Status __attribute__ ((alias ("sane_get_devices")))
+SANE_Status
 sane_airscan_get_devices (const SANE_Device ***device_list, SANE_Bool local_only);
 
-SANE_Status __attribute__ ((alias ("sane_open")))
+SANE_Status
 sane_airscan_open (SANE_String_Const devicename, SANE_Handle *handle);
 
-void __attribute__ ((alias ("sane_close")))
+void
 sane_airscan_close (SANE_Handle handle);
 
-const SANE_Option_Descriptor * __attribute__ ((alias ("sane_get_option_descriptor")))
+const SANE_Option_Descriptor *
 sane_airscan_get_option_descriptor (SANE_Handle handle, SANE_Int option);
 
-SANE_Status __attribute__ ((alias ("sane_control_option")))
+SANE_Status
 sane_airscan_control_option (SANE_Handle handle, SANE_Int option,
     SANE_Action action, void *value, SANE_Int *info);
 
-SANE_Status __attribute__ ((alias ("sane_get_parameters")))
+SANE_Status
 sane_airscan_get_parameters (SANE_Handle handle, SANE_Parameters *params);
 
-SANE_Status __attribute__ ((alias ("sane_start")))
+SANE_Status
 sane_airscan_start (SANE_Handle handle);
 
-SANE_Status __attribute__ ((alias ("sane_read")))
+SANE_Status
 sane_airscan_read (SANE_Handle handle, SANE_Byte *data,
            SANE_Int max_length, SANE_Int *length);
 
-void __attribute__ ((alias ("sane_cancel")))
+void
 sane_airscan_cancel (SANE_Handle handle);
 
-SANE_Status __attribute__ ((alias ("sane_set_io_mode")))
+SANE_Status
 sane_airscan_set_io_mode (SANE_Handle handle, SANE_Bool non_blocking);
 
-SANE_Status __attribute__ ((alias ("sane_get_select_fd")))
+SANE_Status
 sane_airscan_get_select_fd (SANE_Handle handle, SANE_Int * fd);
 
 /* vim:ts=8:sw=4:et
