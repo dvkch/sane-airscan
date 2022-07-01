@@ -31,11 +31,13 @@ CC		= gcc
 COMPRESS 	= gzip -n
 CFLAGS		+= -O2 -g -W -Wall -Werror -pthread $(CPPFLAGS)
 PKG_CONFIG 	= pkg-config
-STRIP 		= -s
+STRIP 		= 
 INSTALL 	= install
 
 ifeq "$(shell uname -s)" "Linux"
     prefix	?= /usr
+else ifeq "$(shell uname -s)" "Darwin"
+    prefix	?= /opt/homebrew/Cellar/sane-backends/1.1.1
 else
     prefix	?= /usr/local
 endif
