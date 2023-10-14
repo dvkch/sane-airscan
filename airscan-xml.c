@@ -677,7 +677,7 @@ xml_wr_add_uint_attr (xml_wr *xml, const char *name, unsigned int value,
         const xml_attr *attrs)
 {
     char buf[64];
-    sprintf(buf, "%u", value);
+    snprintf(buf, sizeof(buf), "%u", value);
     xml_wr_add_text_attr(xml, name, buf, attrs);
 }
 

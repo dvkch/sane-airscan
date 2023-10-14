@@ -155,9 +155,9 @@ math_fmt_mm (SANE_Word mm, char buf[])
     fraction = mmd - integer;
 
     if (fraction != 0) {
-        sprintf(buf, "%d.%2.2d", (int) integer, (int) round(fraction * 100));
+        snprintf(buf, 64, "%d.%2.2d", (int) integer, (int) round(fraction * 100));
     } else {
-        sprintf(buf, "%d", (int) integer);
+        snprintf(buf, 64, "%d", (int) integer);
     }
 
     return buf;

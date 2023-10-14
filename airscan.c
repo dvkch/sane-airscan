@@ -179,11 +179,11 @@ sane_control_option_log (log_ctx *log, const SANE_Option_Descriptor *desc,
         break;
 
     case SANE_TYPE_INT:
-        sprintf(vbuf, "%d", *((SANE_Word*) value));
+        snprintf(vbuf, sizeof(vbuf), "%d", *((SANE_Word*) value));
         break;
 
     case SANE_TYPE_FIXED:
-        sprintf(vbuf, "%g", SANE_UNFIX(*((SANE_Fixed*) value)));
+        snprintf(vbuf, sizeof(vbuf), "%g", SANE_UNFIX(*((SANE_Fixed*) value)));
         break;
 
     case SANE_TYPE_STRING:

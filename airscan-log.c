@@ -166,7 +166,7 @@ log_message (log_ctx *log, bool trace_only, bool force,
 
     /* Format a log message */
     if (log != NULL) {
-        len += sprintf(msg, "%.64s: ", log->name);
+        len += snprintf(msg, sizeof(msg), "%.64s: ", log->name);
         namelen = len;
     }
 

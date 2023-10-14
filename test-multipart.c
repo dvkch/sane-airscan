@@ -102,7 +102,7 @@ main (int argc, char **argv)
             char      name[64];
             FILE      *fp;
 
-            sprintf(name, "%8.8d.part", i);
+            snprintf(name, sizeof(name), "%8.8d.part", i);
             printf("%3d %8d  %s  %s\n", i, (int) data->size, name, data->content_type);
 
             fp = fopen(name, "wb");

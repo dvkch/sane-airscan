@@ -103,7 +103,7 @@ sane_strstatus (SANE_Status status)
 
     default:
       /* non-reentrant, but better than nothing */
-      sprintf (buf, "Unknown SANE status code %d", status);
+      snprintf (buf, sizeof(buf), "Unknown SANE status code %d", status);
       return buf;
     }
 }

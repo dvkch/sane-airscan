@@ -676,7 +676,7 @@ wsdd_finding_get_metadata (wsdd_finding *wsdd, int ifindex, wsdd_xaddr *xaddr)
 
     log_trace(wsdd_log, "querying metadata from %s", http_uri_str(xaddr->uri));
 
-    sprintf(wsdd_buf, wsdd_get_metadata_template, u.text, wsdd->address);
+    snprintf(wsdd_buf, sizeof(wsdd_buf), wsdd_get_metadata_template, u.text, wsdd->address);
     q = http_query_new(wsdd->http_client, http_uri_clone(xaddr->uri),
         "POST", str_dup(wsdd_buf), "application/soap+xml; charset=utf-8");
 
@@ -1080,7 +1080,7 @@ static void
 wsdd_resolver_send_probe (wsdd_resolver *resolver)
 {
     uuid            u = uuid_rand();
-    int             n = sprintf(wsdd_buf, wsdd_probe_template, u.text);
+    int             n = snprintf(wsdd_buf, sizeof(wsdd_buf), wsdd_probe_template, u.text);
     int             rc;
     struct sockaddr *addr;
     socklen_t       addrlen;
@@ -1391,15 +1391,15 @@ wsdd_send_directed_probe (int ifindex, int af, const void *addr)
 
     /* Build request URI */
     if (af == AF_INET) {
-        sprintf(uri_buf, "http://%s", straddr.text);
+        snprintf(uri_buf, sizeof(uri_buf), "http://%s", straddr.text);
     } else if (!ip_is_linklocal(af, addr)) {
-        sprintf(uri_buf, "http://[%s]", straddr.text);
+        snprintf(uri_buf, sizeof(uri_buf), "http://[%s]", straddr.text);
     } else {
         /* Percent character in the IPv6 address literal
          * needs to be properly escaped, so it becomes %25
          * See RFC6874 for details
          */
-        sprintf(uri_buf, "http://[%s%%25%d]", straddr.text, ifindex);
+        snprintf(uri_buf, sizeof(uri_buf), "http://[%s%%25%d]", straddr.text, ifindex);
     }
 
     strcat(uri_buf, WSDD_STABLE_ENDPOINT);
@@ -1408,7 +1408,7 @@ wsdd_send_directed_probe (int ifindex, int af, const void *addr)
 
     /* Build probe request */
     u = uuid_rand();
-    sprintf(wsdd_buf, wsdd_probe_template, u.text);
+    snprintf(wsdd_buf, sizeof(wsdd_buf), wsdd_probe_template, u.text);
 
     /* Send probe request */
     q = http_query_new(wsdd_http_client, uri,
@@ -1558,7 +1558,7 @@ wsdd_netif_dump_addresses (const char *prefix, netif_addr *list)
         char suffix[32] = "";
 
         if (list->ipv6 && ip_is_linklocal(AF_INET6, &list->ip)) {
-            sprintf(suffix, "%%%d", list->ifindex);
+            snprintf(suffix, sizeof(suffix), "%%%d", list->ifindex);
         }
         log_debug(wsdd_log, "%s%s%s", prefix, list->straddr, suffix);
         list = list->next;

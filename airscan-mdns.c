@@ -172,7 +172,7 @@ mdns_avahi_resolver_event_name (AvahiResolverEvent e)
     }
 
     /* Safe, because used only from the work thread */
-    sprintf(buf, "AVAHI_RESOLVER_UNKNOWN(%d)", e);
+    snprintf(buf, sizeof(buf), "AVAHI_RESOLVER_UNKNOWN(%d)", e);
     return buf;
 }
 
@@ -192,7 +192,7 @@ mdns_avahi_browser_event_name (AvahiBrowserEvent e)
     }
 
     /* Safe, because used only from the work thread */
-    sprintf(buf, "AVAHI_BROWSER_UNKNOWN(%d)", e);
+    snprintf(buf, sizeof(buf), "AVAHI_BROWSER_UNKNOWN(%d)", e);
     return buf;
 }
 
@@ -212,7 +212,7 @@ mdns_avahi_client_state_name (AvahiClientState s)
     }
 
     /* Safe, because used only from the work thread */
-    sprintf(buf, "AVAHI_BROWSER_UNKNOWN(%d)", s);
+    snprintf(buf, sizeof(buf), "AVAHI_BROWSER_UNKNOWN(%d)", s);
     return buf;
 }
 
@@ -393,7 +393,7 @@ mdns_make_escl_endpoint (ZEROCONF_METHOD method, const AvahiAddress *addr,
              * needs to be properly escaped, so it becomes %25
              * See RFC6874 for details
              */
-            len += sprintf(str_addr + len, "%%25%d", interface);
+            len += snprintf(str_addr + len, sizeof(str_addr) - len, "%%25%d", interface);
         }
 
         str_addr[len++] = ']';
@@ -549,7 +549,7 @@ mdns_avahi_resolver_callback (AvahiServiceResolver *r,
     if (event == AVAHI_RESOLVER_FOUND) {
         char buf[128];
         avahi_address_snprint(buf, sizeof(buf), addr);
-        sprintf(buf + strlen(buf), ":%d", port);
+        snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf), ":%d", port);
         mdns_debug("resolve", protocol, type, name, buf);
     }
 

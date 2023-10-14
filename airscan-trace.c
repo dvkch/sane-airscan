@@ -198,14 +198,14 @@ trace_dump_data (trace *t, http_data *data)
     }
 
     /* Make file name */
-    sprintf(hdr.name, "%8.8d.%s", t->index ++, ext);
+    snprintf(hdr.name, sizeof(hdr.name), "%8.8d.%s", t->index ++, ext);
 
     /* Make tar header */
     strcpy(hdr.mode, "644");
     strcpy(hdr.uid, "0");
     strcpy(hdr.gid, "0");
-    sprintf(hdr.size, "%lo", (unsigned long) data->size);
-    sprintf(hdr.mtime, "%llo", (long long) time(NULL));
+    snprintf(hdr.size, sizeof(hdr.size), "%lo", (unsigned long) data->size);
+    snprintf(hdr.mtime, sizeof(hdr.mtime), "%llo", (long long) time(NULL));
     hdr.typeflag[0] = '0';
     strcpy(hdr.magic, "ustar");
     memcpy(hdr.version, "00", 2);
@@ -217,7 +217,7 @@ trace_dump_data (trace *t, http_data *data)
     for (i = 0; i < sizeof(hdr); i ++) {
         chsum += ((char*) &hdr)[i];
     }
-    sprintf(hdr.checksum, "%6.6o", chsum & 0777777);
+    snprintf(hdr.checksum, sizeof(hdr.checksum), "%6.6o", chsum & 0777777);
 
     /* Write header and file data */
     fwrite(&hdr, sizeof(hdr), 1, t->data);

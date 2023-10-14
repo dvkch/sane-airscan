@@ -110,13 +110,13 @@ image_decoder_bmp_begin (image_decoder *decoder, const void *data,
     }
 
     if (bmp->info_header.biSize < sizeof(BITMAPINFOHEADER)) {
-        sprintf(bmp->error, "BMP: invalid header size %d",
+        snprintf(bmp->error, sizeof(bmp->error), "BMP: invalid header size %d",
             bmp->info_header.biSize);
         return ERROR(bmp->error);
     }
 
     if (bmp->info_header.biCompression != 0) {
-        sprintf(bmp->error, "BMP: compression %d not supported",
+        snprintf(bmp->error, sizeof(bmp->error), "BMP: compression %d not supported",
             bmp->info_header.biCompression);
         return ERROR(bmp->error);
     }
@@ -137,7 +137,7 @@ image_decoder_bmp_begin (image_decoder *decoder, const void *data,
         break;
 
     default:
-        sprintf(bmp->error, "BMP: %d bits per pixel not supported",
+        snprintf(bmp->error, sizeof(bmp->error), "BMP: %d bits per pixel not supported",
             bmp->info_header.biBitCount);
         return ERROR(bmp->error);
     }

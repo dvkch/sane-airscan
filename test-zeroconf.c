@@ -597,7 +597,7 @@ static void run_test (const char *file)
 
     test_file = file;
 
-    sprintf(title, "=== %s ===", file);
+    snprintf(title, sizeof(title), "=== %s ===", file);
     airscan_init(AIRSCAN_INIT_NO_CONF | AIRSCAN_INIT_NO_THREAD, title);
     eloop_add_start_stop_callback(start_stop_callback);
     eloop_thread_start();

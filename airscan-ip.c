@@ -81,7 +81,8 @@ ip_straddr_from_sockaddr_dport (const struct sockaddr *addr,
                 inet_ntop(AF_INET6, &addr_in6->sin6_addr,
                     straddr.text + 1, sizeof(straddr.text) - 2);
                 if (withzone && addr_in6->sin6_scope_id != 0) {
-                    sprintf(straddr.text + strlen(straddr.text), "%%%d",
+                    snprintf(straddr.text + strlen(straddr.text),
+                        sizeof(straddr.text) - strlen(straddr.text), "%%%d",
                         addr_in6->sin6_scope_id);
                 }
                 strcat(straddr.text, "]");
@@ -97,7 +98,8 @@ ip_straddr_from_sockaddr_dport (const struct sockaddr *addr,
 
     port = htons(port);
     if (port != dport && addr->sa_family != AF_UNIX) {
-        sprintf(straddr.text + strlen(straddr.text), ":%d", port);
+        snprintf(straddr.text + strlen(straddr.text), 
+            sizeof(straddr.text) - strlen(straddr.text), ":%d", port);
     }
 
     return straddr;
@@ -201,7 +203,7 @@ ip_network_to_straddr (ip_network net)
 
     inet_ntop(net.addr.af, &net.addr.ip, straddr.text, sizeof(straddr.text));
     len = strlen(straddr.text);
-    sprintf(straddr.text + len, "/%d", net.mask);
+    snprintf(straddr.text + len, sizeof(straddr.text) - len, "/%d", net.mask);
 
     return straddr;
 }

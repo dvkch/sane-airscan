@@ -958,7 +958,7 @@ http_uri_fix_ipv6_zone (http_uri *uri, int ifindex)
     memcpy(host, field.str, field.len);
 
     /* Append zone suffix */
-    sprintf(host + field.len, "%%25%d", ifindex);
+    snprintf(host + field.len, 64, "%%25%d", ifindex);
 
     /* Update URL's host */
     http_uri_field_replace(uri, UF_HOST, host);
@@ -2974,7 +2974,7 @@ http_query_start_processing (void *p)
         struct sockaddr_un *addr;
         size_t pathlen = strlen(conf.socket_dir) + 1 /* for / */ + strlen(host);
         char *path = alloca(pathlen + 1);
-        sprintf(path, "%s/%s", conf.socket_dir, host);
+        snprintf(path, sizeof(pathlen) + 1, "%s/%s", conf.socket_dir, host);
 
         log_debug(q->client->log, "connecting to local socket %s", path);
         q->addrs_freeaddrinfo = false;
@@ -3018,7 +3018,7 @@ http_query_start_processing (void *p)
 
     if (q->request_data != NULL) {
         char buf[64];
-        sprintf(buf, "%zd", q->request_data->size);
+        snprintf(buf, sizeof(buf), "%zd", q->request_data->size);
         http_hdr_set(&q->request_header, "Content-Length", buf);
     }
 
