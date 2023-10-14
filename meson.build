@@ -43,7 +43,6 @@ m_dep = cc.find_library('m', required : false)
 
 shared_deps = [
   m_dep,
-  dependency('avahi-client'),
   dependency('gnutls'),
   dependency('libjpeg'),
   dependency('libpng'),
